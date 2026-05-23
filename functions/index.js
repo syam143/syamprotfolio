@@ -46,7 +46,7 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/contact', (req, res) => {
-  const { name, email, subject, message } = req.body || {};
+  const { name, email, subject, message, source } = req.body || {};
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Name, email, and message are required.' });
@@ -57,7 +57,7 @@ app.post('/contact', (req, res) => {
      VALUES (?, ?, ?, ?, ?, ?)`
   );
 
-  stmt.run([name, email, subject || 'General Inquiry', message, 'web_form', 0], function (err) {
+  stmt.run([name, email, subject || 'General Inquiry', message, source || 'lets_connect_platform', 0], function (err) {
     if (err) {
       console.error('Contact form submit failed:', err.message);
       return res.status(500).json({ error: 'Unable to save message. Please try again later.' });

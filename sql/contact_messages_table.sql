@@ -8,7 +8,7 @@ CREATE TABLE contact_messages (
   subject VARCHAR(150) NOT NULL DEFAULT 'General Inquiry',
   message TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  source VARCHAR(100) NOT NULL DEFAULT 'web_form',
+  source VARCHAR(100) NOT NULL DEFAULT 'lets_connect_platform',
   processed BOOLEAN NOT NULL DEFAULT FALSE
 );
 

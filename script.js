@@ -202,6 +202,7 @@ async function handleFormSubmit(e) {
   const email = document.getElementById('cf-email').value.trim();
   const subject = document.getElementById('cf-subject').value.trim();
   const message = document.getElementById('cf-msg').value.trim();
+  const source = document.getElementById('cf-source').value || 'lets_connect_platform';
 
   btn.textContent = 'Sending… ⏳';
   btn.disabled = true;
@@ -211,7 +212,7 @@ async function handleFormSubmit(e) {
     const response = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, subject, message }),
+      body: JSON.stringify({ name, email, subject, message, source }),
     });
 
     if (!response.ok) {

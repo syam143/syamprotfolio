@@ -192,17 +192,43 @@ expertiseCards.forEach(card => expertiseObserver.observe(card));
 /* ═══════════════════════════════════════════════════════
    CONTACT FORM
 ═══════════════════════════════════════════════════════ */
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
-  const btn = document.querySelector('.form-btn');
+
+  const form = document.getElementById('contact-form');
+  const btn = form.querySelector('.form-btn');
+  const successNote = document.getElementById('form-success');
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim();
+  const message = document.getElementById('cf-msg').value.trim();
+
   btn.textContent = 'Sending… ⏳';
   btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('form-success').style.display = 'block';
+  successNote.style.display = 'none';
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Unable to send message');
+    }
+
+    successNote.textContent = '✅ Thank you! Your message has been sent.';
+    successNote.style.display = 'block';
+    form.reset();
+  } catch (error) {
+    console.error(error);
+    successNote.textContent = '⚠️ Sorry, something went wrong. Please try again later.';
+    successNote.style.display = 'block';
+  } finally {
     btn.textContent = 'Send Message ✉️';
     btn.disabled = false;
-    e.target.reset();
-  }, 1200);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
